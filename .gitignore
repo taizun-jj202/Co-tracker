@@ -1,0 +1,7 @@
+# Do not want to add the following files
+#   They appear after running the app.py once
+
+.idea/
+
+cotracker/__pycache__/
+cotracker/utils/__pycache__/
