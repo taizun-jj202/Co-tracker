@@ -5,3 +5,5 @@
 
 cotracker/__pycache__/
 cotracker/utils/__pycache__/
+
+gradio_demo/__pycache__
