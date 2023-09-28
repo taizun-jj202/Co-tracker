@@ -9,14 +9,20 @@ import cv2
 import torch
 import argparse
 import numpy as np
+import torch_directml
 
 from PIL import Image
 from cotracker.utils.visualizer import Visualizer, read_video_from_path
 from cotracker.predictor import CoTrackerPredictor
 
-DEFAULT_DEVICE = ('cuda' if torch.cuda.is_available() else
-                  'mps' if torch.backends.mps.is_available() else
-                  'cpu')
+# DEFAULT_DEVICE = ('cuda' if torch.cuda.is_available() else
+#                   'mps' if torch.backends.mps.is_available() else
+#                   'cpu')
+
+DEFAULT_DEVICE = (torch_directml.device if torch_directml.is_available() else
+                 'cuda' if torch.cuda.is_available() else
+                 'mps' if torch.backends.mps.is_available() else
+                 'cpu')
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
