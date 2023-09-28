@@ -1,11 +1,11 @@
 import os
 import torch
+import torch_directml
 import timm
 import einops
 import tqdm
 import cv2
 import gradio as gr
-import torch_directml
 
 from cotracker.utils.visualizer import Visualizer, read_video_from_path
 
@@ -24,11 +24,14 @@ def cotracker_demo(
 
 
     model = torch.hub.load("facebookresearch/co-tracker", "cotracker_w8")
-    if torch.cuda.is_available():
-        model = model.cuda()
-        load_video = load_video.cuda()
-    elif torch_directml.is_available():
-        model = model.torch_directml.device()
+    # if torch.cuda.is_available():
+    #     model = model.cuda()
+    #     load_video = load_video.cuda()
+
+    if torch_directml.is_available():
+        model = model.to(torch_directml.device(0))
+        load_video = load_video.to(torch_directml.device(0))
+    
     pred_tracks, pred_visibility = model(
         load_video, 
         grid_size=grid_size, 
