@@ -6,6 +6,7 @@
 
 import torch
 import torch.nn.functional as F
+import torch_directml
 
 from tqdm import tqdm
 from cotracker.models.core.cotracker.cotracker import get_points_on_a_grid
@@ -71,7 +72,7 @@ class CoTrackerPredictor(torch.nn.Module):
         grid_width = W // grid_step
         grid_height = H // grid_step
         tracks = visibilities = None
-        grid_pts = torch.zeros((1, grid_width * grid_height, 3)).to(video.device)
+        grid_pts = torch.zeros((1, grid_width * grid_height, 3)).to(torch_directml.device(0)) # Putting it on default DML Device (AMD RX6600M)
         grid_pts[0, :, 0] = grid_query_frame
         for offset in tqdm(range(grid_step * grid_step)):
             ox = offset % grid_step
@@ -116,7 +117,7 @@ class CoTrackerPredictor(torch.nn.Module):
             queries[:, :, 1] *= self.interp_shape[1] / W
             queries[:, :, 2] *= self.interp_shape[0] / H
         elif grid_size > 0:
-            grid_pts = get_points_on_a_grid(grid_size, self.interp_shape, device=video.device)
+            grid_pts = get_points_on_a_grid(grid_size, self.interp_shape, device=torch_directml.device(0))
             if segm_mask is not None:
                 segm_mask = F.interpolate(
                     segm_mask, tuple(self.interp_shape), mode="nearest"
@@ -133,7 +134,7 @@ class CoTrackerPredictor(torch.nn.Module):
             )
 
         if add_support_grid:
-            grid_pts = get_points_on_a_grid(self.support_grid_size, self.interp_shape, device=video.device)
+            grid_pts = get_points_on_a_grid(self.support_grid_size, self.interp_shape, device=torch_directml.device(0))
             grid_pts = torch.cat(
                 [torch.zeros_like(grid_pts[:, :, :1]), grid_pts], dim=2
             )
