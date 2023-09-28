@@ -1,0 +1,14 @@
+
+# Importing torch_directml in all
+
+demo.py
+    DEFAULT_DEVICE
+
+gradio_demo/app.py
+    Line 26 
+
+cotracker/predictor.py
+    Changing all devices from video.devices to direcml device
+        Line 74 
+        Line 119 
+        Line 136
