@@ -13,7 +13,6 @@
   <img alt="Spaces" src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue">
 </a>
 
-<img width="500" src="./assets/bmx-bumps.gif" />
 
 **CoTracker** is a fast transformer-based model that can track any point in a video. It brings to tracking some of the benefits of Optical Flow.
  
