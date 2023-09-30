@@ -16,3 +16,9 @@ cotracker/predictor.py
 train.py
     Line 142
     Line 338
+
+cotracker/datasets/utils.py
+    Line 83
+
+cotracker\evaluation\core\evaluator.py
+    Line 189

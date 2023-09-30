@@ -526,8 +526,7 @@ class Lite(LightningLite):
                                 total_steps,
                             )
                             model.train()
-                            # torch.cuda.empty_cache()
-                            torch_directml.flush()
+                            torch.cuda.empty_cache()
 
                 self.barrier()
                 if total_steps > args.num_steps:
