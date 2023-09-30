@@ -12,6 +12,7 @@ import hydra
 import numpy as np
 
 import torch
+import torch_directml
 from omegaconf import OmegaConf
 
 from cotracker.datasets.badja_dataset import BadjaDataset
@@ -102,7 +103,11 @@ def run_eval(cfg: DefaultConfig):
         single_point=cfg.single_point,
         n_iters=cfg.n_iters,
     )
-    if torch.cuda.is_available():
+    # if torch.cuda.is_available():
+    #     predictor.model = predictor.model.cuda()
+    if torch_directml.is_available():
+        predictor.model = predictor.model.to(torch_directml.device(0))
+    elif torch.cuda.is_available():
         predictor.model = predictor.model.cuda()
 
     # Setting the random seeds
