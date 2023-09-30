@@ -334,7 +334,8 @@ class Lite(LightningLite):
         with open(args.ckpt_path + "/meta.json", "w") as file:
             json.dump(vars(args), file, sort_keys=True, indent=4)
 
-        model.cuda()
+        # model.cuda()
+        model.to(torch_directml.device(0))
 
         train_dataset = kubric_movif_dataset.KubricMovifDataset(
             data_root=os.path.join(args.dataset_root, "kubric_movi_f"),
@@ -525,7 +526,8 @@ class Lite(LightningLite):
                                 total_steps,
                             )
                             model.train()
-                            torch.cuda.empty_cache()
+                            # torch.cuda.empty_cache()
+                            torch_directml.flush()
 
                 self.barrier()
                 if total_steps > args.num_steps:
