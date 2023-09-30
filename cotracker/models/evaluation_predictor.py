@@ -5,6 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 
 import torch
+import torch_directml
 import torch.nn.functional as F
 from typing import Tuple
 
@@ -43,7 +44,8 @@ class EvaluationPredictor(torch.nn.Module):
         rgbs = F.interpolate(rgbs, tuple(self.interp_shape), mode="bilinear")
         rgbs = rgbs.reshape(B, T, 3, self.interp_shape[0], self.interp_shape[1])
 
-        device = rgbs.device
+        # device = rgbs.device
+        device = torch_directml.device(0)
 
         queries[:, :, 1] *= self.interp_shape[1] / W
         queries[:, :, 2] *= self.interp_shape[0] / H
@@ -80,7 +82,8 @@ class EvaluationPredictor(torch.nn.Module):
     def _process_one_point(self, rgbs, query):
         t = query[0, 0, 0].long()
 
-        device = rgbs.device
+        # device = rgbs.device
+        device = torch_directml.device(0)
         if self.local_grid_size > 0:
             xy_target = get_points_on_a_grid(
                 self.local_grid_size,
