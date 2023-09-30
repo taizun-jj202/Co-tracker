@@ -10,4 +10,4 @@ gradio_demo/__pycache__
 
 # Ignore model to upload to github
 # Do not want the model to get uploaeded....only the code needs to be changed.
-notebooks\checkpoints\cotracker_stride_4_wind_8.pth
+notebooks/checkpoints/
