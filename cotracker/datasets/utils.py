@@ -6,6 +6,7 @@
 
 
 import torch
+import torch_directml
 import dataclasses
 import torch.nn.functional as F
 from dataclasses import dataclass
@@ -79,7 +80,9 @@ def try_to_cuda(t: Any) -> Any:
         t_cuda: `t` moved to a cuda device, if supported.
     """
     try:
-        t = t.float().cuda()
+        # t = t.float().cuda()
+        t = t.float()
+        t = t.to(torch_directml.device(0))
     except AttributeError:
         pass
     return t
