@@ -8,6 +8,7 @@ from collections import defaultdict
 import os
 from typing import Optional
 import torch
+import torch_directml
 from tqdm import tqdm
 import numpy as np
 
@@ -185,7 +186,10 @@ class Evaluator:
                 if not all(gotit):
                     print("batch is None")
                     continue
-            if torch.cuda.is_available():
+            if torch_directml.is_available():      # Adding DML GPU
+                dataclass_to_cuda_(sample)         # Adding DML GPU 
+                device = torch_directml.device(0)  # Adding DML GPU
+            elif torch.cuda.is_available():
                 dataclass_to_cuda_(sample)
                 device = torch.device("cuda")
             else:
