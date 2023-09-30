@@ -8,6 +8,7 @@ from collections import defaultdict
 import os
 from typing import Optional
 import torch
+import torch_directml
 from tqdm import tqdm
 import numpy as np
 
@@ -185,9 +186,12 @@ class Evaluator:
                 if not all(gotit):
                     print("batch is None")
                     continue
-            if torch.cuda.is_available():
+            # if torch.cuda.is_available():
+            #     dataclass_to_cuda_(sample)
+            #     device = torch.device("cuda")
+            if torch_directml.is_available():
                 dataclass_to_cuda_(sample)
-                device = torch.device("cuda")
+                device = torch_directml.device(0)
             else:
                 device = torch.device("cpu")
 
