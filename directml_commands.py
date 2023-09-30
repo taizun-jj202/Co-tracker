@@ -15,5 +15,8 @@ print(f"DML available: {torch_directml.is_available()}")
 d = (torch_directml.device if torch_directml.is_available() else
      'cuda' if torch.cuda.is_available() else
      'cpu')
+tn = torch.tensor([[0,1], [1,2]])
+tn.to(dev)
+x = torch_directml.context()
 
 print(f'Device in use: {d}, Device name: {torch_directml.device_name(0)}') 
