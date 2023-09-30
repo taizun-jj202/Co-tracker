@@ -143,8 +143,8 @@ def run_test_eval(evaluator, model, dataloaders, writer, step):
         #     predictor.model = predictor.model.cuda()
         if torch_directml.is_available():
             predictor.model = predictor.model.to(torch_directml.device(0))
-        elif torch.cuda.is_available():
-            predictor.model = predictor.model.cuda()
+        # elif torch.cuda.is_available():
+        #     predictor.model = predictor.model.cuda()
 
         metrics = evaluator.evaluate_sequence(
             model=predictor,
