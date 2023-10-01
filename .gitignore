@@ -2,7 +2,9 @@
 #   They appear after running the app.py once
 cotracker/__pycache__
 cotracker/utils/__pycache__
-cotracker\models\__pycache__
+cotracker/models/__pycache__
+cotracker/models/core/__pycache__
+cotracker/models/core/cotracker/__pycache__
 
 # Ignore model to upload to github
 # Do not want the model to get uploaeded....only the code needs to be changed.
