@@ -5,6 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 
 import torch
+import torch_directml
 import torch.nn as nn
 from einops import rearrange
 
@@ -25,7 +26,7 @@ from cotracker.models.core.embeddings import (
 torch.manual_seed(0)
 
 
-def get_points_on_a_grid(grid_size, interp_shape, grid_center=(0, 0), device="cuda"):
+def get_points_on_a_grid(grid_size, interp_shape, grid_center=(0, 0), device=torch_directml.device()):
     if grid_size == 1:
         return torch.tensor([interp_shape[1] / 2, interp_shape[0] / 2], device=device)[
             None, None
@@ -58,7 +59,8 @@ def sample_pos_embed(grid_size, embed_dim, coords):
         .reshape(grid_size[0], grid_size[1], embed_dim)
         .float()
         .unsqueeze(0)
-        .to(coords.device)
+        # .to(coords.device)
+        .to(torch_directml.device())
     )
     sampled_pos_embed = bilinear_sample2d(
         pos_embed.permute(0, 3, 1, 2), coords[:, 0, :, 0], coords[:, 0, :, 1]
@@ -124,7 +126,8 @@ class CoTracker(nn.Module):
 
         B, S, __, H8, W8 = fmaps.shape
 
-        device = fmaps.device
+        # device = fmaps.device
+        device = torch_directml.device()
 
         if S_init < S:
             coords = torch.cat(
@@ -220,7 +223,8 @@ class CoTracker(nn.Module):
         B, T, C, H, W = rgbs.shape
         B, N, __ = queries.shape
 
-        device = rgbs.device
+        # device = rgbs.device
+        device = torch_directml.device()
         assert B == 1
         # INIT for the first sequence
         # We want to sort points by the first frame they are visible to add them to the tensor of tracked points consequtively

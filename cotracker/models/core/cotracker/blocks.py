@@ -5,6 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 
 import torch
+import torch_directml
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -297,7 +298,8 @@ class CorrBlock:
             dx = torch.linspace(-r, r, 2 * r + 1)
             dy = torch.linspace(-r, r, 2 * r + 1)
             delta = torch.stack(torch.meshgrid(dy, dx, indexing="ij"), axis=-1).to(
-                coords.device
+                # coords.device
+                torch_directml.device()
             )
 
             centroid_lvl = coords.reshape(B * S * N, 1, 1, 2) / 2 ** i
