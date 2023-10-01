@@ -106,7 +106,7 @@ def run_eval(cfg: DefaultConfig):
     # if torch.cuda.is_available():
     #     predictor.model = predictor.model.cuda()
     if torch_directml.is_available():
-        predictor.model = predictor.model.to(torch_directml.device(0))
+        predictor.model = predictor.model.to(torch_directml.device())
     elif torch.cuda.is_available():
         predictor.model = predictor.model.cuda()
 

@@ -191,7 +191,7 @@ class Evaluator:
             #     device = torch.device("cuda")
             if torch_directml.is_available():
                 dataclass_to_cuda_(sample)
-                device = torch_directml.device(0)
+                device = torch_directml.device()
             else:
                 device = torch.device("cpu")
 

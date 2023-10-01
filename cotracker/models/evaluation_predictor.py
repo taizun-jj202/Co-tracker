@@ -45,7 +45,7 @@ class EvaluationPredictor(torch.nn.Module):
         rgbs = rgbs.reshape(B, T, 3, self.interp_shape[0], self.interp_shape[1])
 
         # device = rgbs.device
-        device = torch_directml.device(0)
+        device = torch_directml.device()
 
         queries[:, :, 1] *= self.interp_shape[1] / W
         queries[:, :, 2] *= self.interp_shape[0] / H
@@ -83,7 +83,7 @@ class EvaluationPredictor(torch.nn.Module):
         t = query[0, 0, 0].long()
 
         # device = rgbs.device
-        device = torch_directml.device(0)
+        device = torch_directml.device()
         if self.local_grid_size > 0:
             xy_target = get_points_on_a_grid(
                 self.local_grid_size,

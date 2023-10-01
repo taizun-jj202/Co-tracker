@@ -82,7 +82,7 @@ def try_to_cuda(t: Any) -> Any:
     try:
         # t = t.float().cuda()
         t = t.float()
-        t = t.to(torch_directml.device(0))
+        t = t.to(torch_directml.device())
     except AttributeError:
         pass
     return t
