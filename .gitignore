@@ -1,6 +1,7 @@
 # Do not want to add the following files
 #   They appear after running the app.py once
-
+cotracker\__pycache__
+cotracker\utils\__pycache__
 
 # Ignore model to upload to github
 # Do not want the model to get uploaeded....only the code needs to be changed.
