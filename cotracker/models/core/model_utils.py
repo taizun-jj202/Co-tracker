@@ -5,6 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 
 import torch
+import torch_directml
 
 EPS = 1e-6
 
@@ -26,15 +27,16 @@ def normalize_single(d):
 def normalize(d):
     # d is B x whatever. normalize within each element of the batch
     out = torch.zeros(d.size())
-    if d.is_cuda:
-        out = out.cuda()
+    # if d.is_cuda:
+    #     out = out.cuda()
+    out = out.to(torch_directml.device())
     B = list(d.size())[0]
     for b in list(range(B)):
         out[b] = normalize_single(d[b])
     return out
 
 
-def meshgrid2d(B, Y, X, stack=False, norm=False, device="cuda"):
+def meshgrid2d(B, Y, X, stack=False, norm=False, device=torch_directml.device()):
     # returns a meshgrid sized B x Y x X
 
     grid_y = torch.linspace(0.0, Y - 1, Y, device=torch.device(device))
@@ -103,7 +105,7 @@ def bilinear_sample2d(im, x, y, return_inbounds=False):
     dim2 = W
     dim1 = W * H
 
-    base = torch.arange(0, B, dtype=torch.int64, device=x.device) * dim1
+    base = torch.arange(0, B, dtype=torch.int64, device=torch_directml.device()) * dim1
     base = torch.reshape(base, [B, 1]).repeat([1, N])
 
     base_y0 = base + y0_clip * dim2

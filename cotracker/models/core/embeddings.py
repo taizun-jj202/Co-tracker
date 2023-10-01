@@ -5,6 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 
 import torch
+import torch_directml
 import numpy as np
 
 
@@ -71,11 +72,11 @@ def get_2d_embedding(xy, C, cat_coords=True):
     x = xy[:, :, 0:1]
     y = xy[:, :, 1:2]
     div_term = (
-        torch.arange(0, C, 2, device=xy.device, dtype=torch.float32) * (1000.0 / C)
+        torch.arange(0, C, 2, device=xy.to(torch_directml.device()), dtype=torch.float32) * (1000.0 / C)
     ).reshape(1, 1, int(C / 2))
 
-    pe_x = torch.zeros(B, N, C, device=xy.device, dtype=torch.float32)
-    pe_y = torch.zeros(B, N, C, device=xy.device, dtype=torch.float32)
+    pe_x = torch.zeros(B, N, C, device=xy.to(torch_directml.device()), dtype=torch.float32)
+    pe_y = torch.zeros(B, N, C, device=xy.to(torch_directml.device()), dtype=torch.float32)
 
     pe_x[:, :, 0::2] = torch.sin(x * div_term)
     pe_x[:, :, 1::2] = torch.cos(x * div_term)
@@ -97,12 +98,12 @@ def get_3d_embedding(xyz, C, cat_coords=True):
     y = xyz[:, :, 1:2]
     z = xyz[:, :, 2:3]
     div_term = (
-        torch.arange(0, C, 2, device=xyz.device, dtype=torch.float32) * (1000.0 / C)
+        torch.arange(0, C, 2, device=xyz.to(torch_directml.device()), dtype=torch.float32) * (1000.0 / C)
     ).reshape(1, 1, int(C / 2))
 
-    pe_x = torch.zeros(B, N, C, device=xyz.device, dtype=torch.float32)
-    pe_y = torch.zeros(B, N, C, device=xyz.device, dtype=torch.float32)
-    pe_z = torch.zeros(B, N, C, device=xyz.device, dtype=torch.float32)
+    pe_x = torch.zeros(B, N, C, device=xyz.to(torch_directml.device()), dtype=torch.float32)
+    pe_y = torch.zeros(B, N, C, device=xyz.to(torch_directml.device()), dtype=torch.float32)
+    pe_z = torch.zeros(B, N, C, device=xyz.to(torch_directml.device()), dtype=torch.float32)
 
     pe_x[:, :, 0::2] = torch.sin(x * div_term)
     pe_x[:, :, 1::2] = torch.cos(x * div_term)
@@ -128,13 +129,13 @@ def get_4d_embedding(xyzw, C, cat_coords=True):
     z = xyzw[:, :, 2:3]
     w = xyzw[:, :, 3:4]
     div_term = (
-        torch.arange(0, C, 2, device=xyzw.device, dtype=torch.float32) * (1000.0 / C)
+        torch.arange(0, C, 2, device=xyzw.to(torch_directml.device()), dtype=torch.float32) * (1000.0 / C)
     ).reshape(1, 1, int(C / 2))
 
-    pe_x = torch.zeros(B, N, C, device=xyzw.device, dtype=torch.float32)
-    pe_y = torch.zeros(B, N, C, device=xyzw.device, dtype=torch.float32)
-    pe_z = torch.zeros(B, N, C, device=xyzw.device, dtype=torch.float32)
-    pe_w = torch.zeros(B, N, C, device=xyzw.device, dtype=torch.float32)
+    pe_x = torch.zeros(B, N, C, device=xyzw.to(torch_directml.device()), dtype=torch.float32)
+    pe_y = torch.zeros(B, N, C, device=xyzw.to(torch_directml.device()), dtype=torch.float32)
+    pe_z = torch.zeros(B, N, C, device=xyzw.to(torch_directml.device()), dtype=torch.float32)
+    pe_w = torch.zeros(B, N, C, device=xyzw.to(torch_directml.device()), dtype=torch.float32)
 
     pe_x[:, :, 0::2] = torch.sin(x * div_term)
     pe_x[:, :, 1::2] = torch.cos(x * div_term)
