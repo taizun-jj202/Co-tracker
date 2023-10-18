@@ -27,6 +27,9 @@ from cotracker.models.build_cotracker import (
     build_cotracker,
 )
 
+dml_device = torch.device(torch_directml.device if torch_directml.is_available() else
+                          'cuda' if torch.cuda.is_available() else 
+                          'cpu')
 
 @dataclass(eq=False)
 class DefaultConfig:
@@ -103,12 +106,10 @@ def run_eval(cfg: DefaultConfig):
         single_point=cfg.single_point,
         n_iters=cfg.n_iters,
     )
-    # if torch.cuda.is_available():
-    #     predictor.model = predictor.model.cuda()
-    if torch_directml.is_available():
-        predictor.model = predictor.model.to(torch_directml.device())
-    elif torch.cuda.is_available():
-        predictor.model = predictor.model.cuda()
+    # # if torch.cuda.is_available():
+    # #     predictor.model = predictor.model.cuda()
+    
+    predictor.model = predictor.model.to(dml_device)
 
     # Setting the random seeds
     torch.manual_seed(cfg.seed)

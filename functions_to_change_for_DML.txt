@@ -26,7 +26,10 @@ cotracker/evaluation/core/evaluator.py
     Line 189
 
 cotracker/evaluation/evaluate.py
-    Line 106
+    Line 30
+        Added universal device variable.
+    Line 109 and 112
+
 
 cotracker/models/evaluation_predictor.py
     Line 48
