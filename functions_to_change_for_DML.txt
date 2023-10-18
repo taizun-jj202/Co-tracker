@@ -5,7 +5,9 @@ demo.py
     DEFAULT_DEVICE
 
 gradio_demo/app.py
-    Line 26 
+    Line 30
+        Added universal device selection. CPU / GPU / DML 
+        
 
 cotracker/predictor.py
     Changing all devices from video.devices to direcml device
