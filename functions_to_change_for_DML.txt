@@ -48,10 +48,18 @@ cotracker/models/core/cotracker/blocks.py
         Line 305    
 
 cotracker\models\core\cotracker\cotracker.py
-    Line 28 --> "cuda" to torch_directml.device()
-    Line 63
-    Line 128 
-    Line 225
+#    Line 28 --> "cuda" to torch_directml.device()
+#    Line 63
+#    Line 128 
+#    Line 225
+    
+    Added 'dml_device' variable @ Line 25-27
+        Line 35
+        Line 70 
+        Line 137
+        Line 167 (device --> dml_device)
+        Line 234
+
 
 cotracker\models\core\embeddings.py
     Changing all variable.devices to variable.to(torch_directml.device())
