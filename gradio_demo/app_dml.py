@@ -9,6 +9,9 @@ import torch_directml
 
 from cotracker.utils.visualizer import Visualizer, read_video_from_path
 
+device = torch.device(torch_directml.device if torch_directml.is_available() else
+                      'cuda' if torch.cuda.is_available() else
+                      'cpu')
 
 def cotracker_demo(
     input_video, 
@@ -24,15 +27,16 @@ def cotracker_demo(
 
 
     model = torch.hub.load("facebookresearch/co-tracker", "cotracker_w8")
-    # if torch.cuda.is_available():
-    #     model = model.cuda()
-    #     load_video = load_video.cuda()
+    model = model.to(device)
+    # # if torch.cuda.is_available():
+    # #     model = model.cuda()
+    # #     load_video = load_video.cuda()
 
-    gpu = torch_directml.device()
-    # Adding DirectML GPU detection for myself
-    if torch_directml.is_available():
-        model = model.to(gpu)
-        load_video = load_video.to(gpu)
+    # gpu = torch_directml.device()
+    # # Adding DirectML GPU detection for myself
+    # if torch_directml.is_available():
+    #     model = model.to(gpu)
+    #     load_video = load_video.to(gpu)
 
     pred_tracks, pred_visibility = model(
         load_video,
