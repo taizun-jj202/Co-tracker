@@ -44,7 +44,8 @@ cotracker/models/evaluation_predictor.py
         Line 87
 
 cotracker/models/core/cotracker/blocks.py
-    Line 301
+    Added 'dml_device' variable @ Line 15-17
+        Line 305    
 
 cotracker\models\core\cotracker\cotracker.py
     Line 28 --> "cuda" to torch_directml.device()
