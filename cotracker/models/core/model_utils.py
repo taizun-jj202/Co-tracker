@@ -9,6 +9,9 @@ import torch_directml
 
 EPS = 1e-6
 
+dml_device = torch.device(torch_directml.device if torch_directml.is_available() else
+                          'cuda' if torch.cuda.is_available() else
+                          'cpu')
 
 def smart_cat(tensor1, tensor2, dim):
     if tensor1 is None:
@@ -29,21 +32,21 @@ def normalize(d):
     out = torch.zeros(d.size())
     # if d.is_cuda:
     #     out = out.cuda()
-    out = out.to(torch_directml.device())
+    out = out.to(dml_device)
     B = list(d.size())[0]
     for b in list(range(B)):
         out[b] = normalize_single(d[b])
     return out
 
 
-def meshgrid2d(B, Y, X, stack=False, norm=False, device=torch_directml.device()):
+def meshgrid2d(B, Y, X, stack=False, norm=False, device=dml_device):
     # returns a meshgrid sized B x Y x X
 
-    grid_y = torch.linspace(0.0, Y - 1, Y, device=torch_directml.device()) #
+    grid_y = torch.linspace(0.0, Y - 1, Y, device=device) #
     grid_y = torch.reshape(grid_y, [1, Y, 1])
     grid_y = grid_y.repeat(B, 1, X)
 
-    grid_x = torch.linspace(0.0, X - 1, X, device=torch_directml.device())
+    grid_x = torch.linspace(0.0, X - 1, X, device=device)
     grid_x = torch.reshape(grid_x, [1, 1, X])
     grid_x = grid_x.repeat(B, Y, 1)
 
@@ -105,7 +108,7 @@ def bilinear_sample2d(im, x, y, return_inbounds=False):
     dim2 = W
     dim1 = W * H
 
-    base = torch.arange(0, B, dtype=torch.int64, device=torch_directml.device()) * dim1
+    base = torch.arange(0, B, dtype=torch.int64, device=dml_device) * dim1
     base = torch.reshape(base, [B, 1]).repeat([1, N])
 
     base_y0 = base + y0_clip * dim2
