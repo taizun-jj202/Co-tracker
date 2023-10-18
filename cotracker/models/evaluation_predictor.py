@@ -11,6 +11,9 @@ from typing import Tuple
 
 from cotracker.models.core.cotracker.cotracker import CoTracker, get_points_on_a_grid
 
+dml_device = torch.device(torch_directml.device if torch_directml.is_available() else
+                          'cuda' if torch.cuda.is_available() else
+                          'cpu')
 
 class EvaluationPredictor(torch.nn.Module):
     def __init__(
@@ -45,7 +48,7 @@ class EvaluationPredictor(torch.nn.Module):
         rgbs = rgbs.reshape(B, T, 3, self.interp_shape[0], self.interp_shape[1])
 
         # device = rgbs.device
-        device = torch_directml.device()
+        device = torch.device(dml_device)
 
         queries[:, :, 1] *= self.interp_shape[1] / W
         queries[:, :, 2] *= self.interp_shape[0] / H
@@ -64,9 +67,7 @@ class EvaluationPredictor(torch.nn.Module):
         else:
             if self.grid_size > 0:
                 xy = get_points_on_a_grid(self.grid_size, rgbs.shape[3:], device=device)
-                xy = torch.cat([torch.zeros_like(xy[:, :, :1]), xy], dim=2).to(
-                    device
-                )  #
+                xy = torch.cat([torch.zeros_like(xy[:, :, :1]), xy], dim=2).to(device)  #
                 queries = torch.cat([queries, xy], dim=1)  #
 
             traj_e, __, vis_e, __ = self.model(
@@ -83,7 +84,7 @@ class EvaluationPredictor(torch.nn.Module):
         t = query[0, 0, 0].long()
 
         # device = rgbs.device
-        device = torch_directml.device()
+        device = torch.device(dml_device)
         if self.local_grid_size > 0:
             xy_target = get_points_on_a_grid(
                 self.local_grid_size,
