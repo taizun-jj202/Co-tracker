@@ -12,6 +12,9 @@ import torch.nn.functional as F
 from dataclasses import dataclass
 from typing import Any, Optional
 
+dml_device = torch.device(torch_directml.device if torch_directml.is_available() else
+                          'cuda' if torch.cuda.is_available() else
+                          'cpu')
 
 @dataclass(eq=False)
 class CoTrackerData:
@@ -82,7 +85,7 @@ def try_to_cuda(t: Any) -> Any:
     try:
         # t = t.float().cuda()
         t = t.float()
-        t = t.to(torch_directml.device())
+        t = t.to(dml_device)
     except AttributeError:
         pass
     return t
