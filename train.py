@@ -36,6 +36,9 @@ from cotracker.datasets import kubric_movif_dataset
 from cotracker.datasets.utils import collate_fn, collate_fn_train, dataclass_to_cuda_
 from cotracker.models.core.cotracker.losses import sequence_loss, balanced_ce_loss
 
+dml_device = torch.device(torch_directml.device if torch_directml.is_available() else
+                          'cuda' if torch.cuda.is_available() else
+                          'cpu')
 
 def fetch_optimizer(args, model):
     """Create the optimizer and learning rate scheduler"""
@@ -62,7 +65,8 @@ def forward_batch(batch, model, args, loss_fn=None, writer=None, step=0):
     B, T, C, H, W = rgbs.shape
     assert C == 3
     B, T, N, D = trajs_g.shape
-    device = rgbs.device
+    # device = rgbs.device
+    device = dml_device
 
     __, first_positive_inds = torch.max(vis_g, dim=1)
     # We want to make sure that during training the model sees visible points
@@ -141,10 +145,7 @@ def run_test_eval(evaluator, model, dataloaders, writer, step):
         )
         # if torch.cuda.is_available():
         #     predictor.model = predictor.model.cuda()
-        if torch_directml.is_available():
-            predictor.model = predictor.model.to(torch_directml.device(0))
-        # elif torch.cuda.is_available():
-        #     predictor.model = predictor.model.cuda()
+        predictor.model = predictor.model.to(dml_device)
 
         metrics = evaluator.evaluate_sequence(
             model=predictor,
@@ -335,7 +336,7 @@ class Lite(LightningLite):
             json.dump(vars(args), file, sort_keys=True, indent=4)
 
         # model.cuda()
-        model.to(torch_directml.device(0))
+        model.to(dml_device)
 
         train_dataset = kubric_movif_dataset.KubricMovifDataset(
             data_root=os.path.join(args.dataset_root, "kubric_movi_f"),

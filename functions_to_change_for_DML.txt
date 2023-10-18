@@ -11,13 +11,18 @@ gradio_demo/app.py
 
 cotracker/predictor.py
     Changing all devices from video.devices to direcml device
-        Line 74 
+
+    Universal device selector.
+        Line 78 
         Line 119 
         Line 136
 
 train.py
-    Line 142
-    Line 338
+    Added dml_device variable that automatically selects appropriate device
+    Line 39
+        Line 147
+        Line 338
+    Line 69
 
 cotracker/datasets/utils.py
     Line 83
