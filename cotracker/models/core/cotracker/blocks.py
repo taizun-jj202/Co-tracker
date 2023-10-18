@@ -12,6 +12,9 @@ import torch.nn.functional as F
 from einops import rearrange
 from timm.models.vision_transformer import Attention, Mlp
 
+dml_device = torch.device(torch_directml.device if torch_directml.is_available() else
+                          'cuda' if torch.cuda.is_available() else
+                          'cpu')
 
 class ResidualBlock(nn.Module):
     def __init__(self, in_planes, planes, norm_fn="group", stride=1):
@@ -299,7 +302,7 @@ class CorrBlock:
             dy = torch.linspace(-r, r, 2 * r + 1)
             delta = torch.stack(torch.meshgrid(dy, dx, indexing="ij"), axis=-1).to(
                 # coords.device
-                torch_directml.device()
+                dml_device
             )
 
             centroid_lvl = coords.reshape(B * S * N, 1, 1, 2) / 2 ** i
