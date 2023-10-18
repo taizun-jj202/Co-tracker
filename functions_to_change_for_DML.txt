@@ -25,7 +25,8 @@ train.py
     Line 69
 
 cotracker/datasets/utils.py
-    Line 83
+    Added 'dml_device' variable @ Line 15-17
+        Line 88
 
 cotracker/evaluation/core/evaluator.py
     Line 189
