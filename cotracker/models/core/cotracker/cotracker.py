@@ -22,11 +22,18 @@ from cotracker.models.core.embeddings import (
     get_2d_sincos_pos_embed,
 )
 
+dml_device = torch.device(torch_directml.device if torch_directml.is_available() else
+                          'cuda' if torch.cuda.is_available() else
+                          'cpu')
 
 torch.manual_seed(0)
 
 
-def get_points_on_a_grid(grid_size, interp_shape, grid_center=(0, 0), device=torch_directml.device()):
+def get_points_on_a_grid(grid_size, 
+                         interp_shape, 
+                         grid_center=(0, 0), 
+                         device=dml_device
+                         ):
     if grid_size == 1:
         return torch.tensor([interp_shape[1] / 2, interp_shape[0] / 2], device=device)[
             None, None
@@ -60,7 +67,7 @@ def sample_pos_embed(grid_size, embed_dim, coords):
         .float()
         .unsqueeze(0)
         # .to(coords.device)
-        .to(torch_directml.device())
+        .to(dml_device)
     )
     sampled_pos_embed = bilinear_sample2d(
         pos_embed.permute(0, 3, 1, 2), coords[:, 0, :, 0], coords[:, 0, :, 1]
@@ -127,7 +134,7 @@ class CoTracker(nn.Module):
         B, S, __, H8, W8 = fmaps.shape
 
         # device = fmaps.device
-        device = torch_directml.device()
+        device = torch.device(dml_device)
 
         if S_init < S:
             coords = torch.cat(
@@ -157,7 +164,7 @@ class CoTracker(nn.Module):
             torch.from_numpy(get_1d_sincos_pos_embed_from_grid(456, times_[0]))[None]
             .repeat(B, 1, 1)
             .float()
-            .to(device)
+            .to(dml_device)
         )
         coord_predictions = []
 
@@ -224,7 +231,7 @@ class CoTracker(nn.Module):
         B, N, __ = queries.shape
 
         # device = rgbs.device
-        device = torch_directml.device()
+        device = torch.device(dml_device)
         assert B == 1
         # INIT for the first sequence
         # We want to sort points by the first frame they are visible to add them to the tensor of tracked points consequtively
