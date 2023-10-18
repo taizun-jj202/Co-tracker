@@ -39,11 +39,11 @@ def normalize(d):
 def meshgrid2d(B, Y, X, stack=False, norm=False, device=torch_directml.device()):
     # returns a meshgrid sized B x Y x X
 
-    grid_y = torch.linspace(0.0, Y - 1, Y, device=torch.device(device))
+    grid_y = torch.linspace(0.0, Y - 1, Y, device=torch_directml.device()) #
     grid_y = torch.reshape(grid_y, [1, Y, 1])
     grid_y = grid_y.repeat(B, 1, X)
 
-    grid_x = torch.linspace(0.0, X - 1, X, device=torch.device(device))
+    grid_x = torch.linspace(0.0, X - 1, X, device=torch_directml.device())
     grid_x = torch.reshape(grid_x, [1, 1, X])
     grid_x = grid_x.repeat(B, Y, 1)
 
