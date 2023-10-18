@@ -62,7 +62,10 @@ cotracker\models\core\cotracker\cotracker.py
 
 
 cotracker\models\core\embeddings.py
-    Changing all variable.devices to variable.to(torch_directml.device())
+    Added 'dml_device' variable @ Line 11-13
+#        Changing all variable.devices to variable.to(torch_directml.device())
+
+        Changing all variable.devices to variable.to(dml_device)
 
 cotracker\models\core\model_utils.py
     Line 32 (Added L32, remove and uncomment 30,31 for regular functionality)
