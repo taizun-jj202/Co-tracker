@@ -22,9 +22,7 @@ from cotracker.models.core.embeddings import (
     get_2d_sincos_pos_embed,
 )
 
-dml_device = torch.device(torch_directml.device if torch_directml.is_available() else
-                          'cuda' if torch.cuda.is_available() else
-                          'cpu')
+dml_device = torch_directml.device()
 
 torch.manual_seed(0)
 

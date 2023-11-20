@@ -8,9 +8,7 @@ import torch
 import torch_directml
 import numpy as np
 
-dml_device = torch.device(torch_directml.device if torch_directml.is_available() else
-                          'cuda' if torch.cuda.is_available() else
-                          'cpu')
+dml_device = torch_directml.device()
 
 def get_2d_sincos_pos_embed(embed_dim, grid_size, cls_token=False, extra_tokens=0):
     """

@@ -9,9 +9,7 @@ import torch_directml
 
 EPS = 1e-6
 
-dml_device = torch.device(torch_directml.device if torch_directml.is_available() else
-                          'cuda' if torch.cuda.is_available() else
-                          'cpu')
+dml_device = torch_directml.device()
 
 def smart_cat(tensor1, tensor2, dim):
     if tensor1 is None:
