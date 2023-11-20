@@ -12,9 +12,7 @@ import torch.nn.functional as F
 from dataclasses import dataclass
 from typing import Any, Optional
 
-dml_device = torch.device(torch_directml.device if torch_directml.is_available() else
-                          'cuda' if torch.cuda.is_available() else
-                          'cpu')
+dml_device = torch_directml.device()
 
 @dataclass(eq=False)
 class CoTrackerData:
