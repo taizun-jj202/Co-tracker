@@ -44,7 +44,7 @@ cotracker/models/evaluation_predictor.py
         Line 87
 
 cotracker/models/core/cotracker/blocks.py
-    Added 'dml_device' variable @ Line 15-17
+    Added 'dml_device' variable @ Line 15
         Line 305    
 
 cotracker\models\core\cotracker\cotracker.py
