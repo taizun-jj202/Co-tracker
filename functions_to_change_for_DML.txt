@@ -29,7 +29,7 @@ cotracker/datasets/utils.py
         Line 88
 
 cotracker/evaluation/core/evaluator.py
-    Added 'dml_device' variable @ Line 23-25
+    Added 'dml_device' variable @ Line 23
         Line 195
 
 cotracker/evaluation/evaluate.py

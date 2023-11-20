@@ -20,9 +20,7 @@ from cotracker.evaluation.core.eval_utils import compute_tapvid_metrics
 
 import logging
 
-dml_device = torch.device(torch_directml.device if torch_directml.is_available() else
-                          'cuda' if torch.cuda.is_available() else
-                          'cpu')
+dml_device = torch_directml.device()
 
 class Evaluator:
     """
