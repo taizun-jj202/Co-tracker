@@ -11,9 +11,7 @@ from typing import Tuple
 
 from cotracker.models.core.cotracker.cotracker import CoTracker, get_points_on_a_grid
 
-dml_device = torch.device(torch_directml.device if torch_directml.is_available() else
-                          'cuda' if torch.cuda.is_available() else
-                          'cpu')
+dml_device = torch_directml.device()
 
 class EvaluationPredictor(torch.nn.Module):
     def __init__(

@@ -15,9 +15,7 @@ from cotracker.models.build_cotracker import (
     build_cotracker,
 )
 
-dml_device = torch.device(torch_directml.device if torch_directml.is_available() else
-                          'cuda' if torch.cuda.is_available() else
-                          'cpu')
+dml_device = torch_directml.device()
 
 class CoTrackerPredictor(torch.nn.Module):
     def __init__(
